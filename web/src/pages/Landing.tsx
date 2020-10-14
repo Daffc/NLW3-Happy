@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/global.css';
 import '../styles/pages/landing.css';
 import {Link} from 'react-router-dom';
 
@@ -11,7 +10,7 @@ function Landing(){
     return (
         <div id="page-landing">
             <div className="content-wrapper">
-            <img src={logoImg}></img>
+            <img alt="Happy" src={logoImg}></img>
 
             <main>
                 <h1>Leve Felicidade para o mundo</h1>
