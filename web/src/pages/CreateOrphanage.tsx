@@ -2,7 +2,7 @@ import React, { FormEvent, useState, ChangeEvent} from "react";
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 
-import {FiPlus} from "react-icons/fi"
+import {FiPlus, FiX} from "react-icons/fi"
 
 
 import '../styles/pages/create-orphanage.css';
@@ -61,15 +61,31 @@ export default function CreateOrphanage(){
   }
 
   function handleSelectImages(event: ChangeEvent<HTMLInputElement>){
-    console.log(event.target.files);
 
     if(!event.target.files){
       return;
     }
 
     const selectedImages = Array.from(event.target.files);
+    
     setImages(selectedImages);  
     const selectedImagesPreview = selectedImages.map(image => {
+      return URL.createObjectURL(image);
+    });
+
+
+    setPreviewImages(selectedImagesPreview);
+  }
+
+  function handleImageExclusion(index: number){
+    
+    const newImages = images;
+
+    newImages.splice(index, 1);
+
+    setImages(newImages)
+
+    const selectedImagesPreview = newImages.map(image => {
       return URL.createObjectURL(image);
     });
 
@@ -131,9 +147,16 @@ export default function CreateOrphanage(){
 
               <div className="images-container">
                 {
-                  previewImages.map(image => {
+                  previewImages.map((image, index) => {
                     return(
-                      <img src={image} key={image} alt={name} />
+                      <div className="image-container" key={image}>
+
+                        <img src={image} alt={name} />
+
+                        <button type="button" onClick={() => handleImageExclusion(index)}>
+                          <FiX size={24} color="#FF669D"/>
+                        </button>
+                      </div>
                     );
                   })
 
@@ -142,8 +165,6 @@ export default function CreateOrphanage(){
                 <label htmlFor="image[]" className="new-image">
                   <FiPlus size={24} color="#12b6d6" />
                 </label>
-
-                
               </div>
               <input multiple 
                 onChange={handleSelectImages} 
